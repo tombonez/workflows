@@ -1,0 +1,54 @@
+name: PHP
+
+on:
+  workflow_call:
+    inputs:
+      php-version:
+        required: true
+        type: string
+    secrets:
+      composer_auth_json:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use Checkout
+        uses: actions/checkout@v2.4.0
+
+      - name: Use PHP ${{ inputs.php-version }} with Composer 2
+        uses: shivammathur/setup-php@2.15.0
+        with:
+          php-version: ${{ inputs.php-version }}
+          tools: composer:v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Use Cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Validate Composer Files
+        run: composer validate
+
+      - name: Add Composer Authentication
+        run: echo '${{ secrets.composer_auth_json }}' > $GITHUB_WORKSPACE/auth.json
+
+      - name: Install Dependencies
+        run: composer install --no-progress
+
+      - name: Remove Composer Authentication
+        run: rm -f $GITHUB_WORKSPACE/auth.json
+
+      - name: Run phpcs
+        run: composer run-script phpcs
+
+      - name: Run twigcs
+        run: composer run-script twigcs

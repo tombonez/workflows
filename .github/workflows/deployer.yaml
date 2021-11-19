@@ -1,0 +1,39 @@
+name: Deployer
+
+on:
+  workflow_call:
+    inputs:
+      deployer-version:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      php-version:
+        required: true
+        type: string
+    secrets:
+      private_key:
+        required: true
+      slack_url:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use Checkout
+        uses: actions/checkout@v2.4.0
+
+      - name: Use PHP ${{ inputs.php-version }}
+        uses: shivammathur/setup-php@2.15.0
+        with:
+          php-version: ${{ inputs.php-version }}
+
+      - name: Deploy
+        uses: deployphp/action@v1.0.16
+        with:
+          private-key: ${{ secrets.private_key }}
+          dep: deploy -o slack_webhook=${{ secrets.slack_url }} --revision=${{ github.sha }} ${{ inputs.environment }}
+          deployer-version: ${{ inputs.deployer-version }}
