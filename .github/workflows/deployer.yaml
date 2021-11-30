@@ -34,6 +34,6 @@ jobs:
       - name: Deploy
         uses: deployphp/action@v1.0.16
         with:
-          private-key: ${{ secrets.private_key }}
           dep: deploy -o slack_webhook=${{ secrets.slack_url }} --revision=${{ github.sha }} ${{ inputs.environment }}
           deployer-version: ${{ inputs.deployer-version }}
+          private-key: ${{ secrets.private_key }}
