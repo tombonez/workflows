@@ -6,9 +6,21 @@ on:
       php-version:
         required: true
         type: string
+      run-phpcs:
+        default: true
+        required: false
+        type: boolean
+      run-twigcs:
+        default: true
+        required: false
+        type: boolean
+      use-composer-auth:
+        default: true
+        required: false
+        type: boolean
     secrets:
-      composer_auth_json:
-        required: true
+      composer-auth-json:
+        required: false
 
 jobs:
   build:
@@ -39,16 +51,20 @@ jobs:
         run: composer validate
 
       - name: Add Composer Authentication
-        run: echo '${{ secrets.composer_auth_json }}' > $GITHUB_WORKSPACE/auth.json
+        if: ${{ inputs.use-composer-auth }}
+        run: echo '${{ secrets.composer-auth-json }}' > $GITHUB_WORKSPACE/auth.json
 
       - name: Install Dependencies
         run: composer install --no-progress
 
       - name: Remove Composer Authentication
+        if: ${{ inputs.use-composer-auth }}
         run: rm -f $GITHUB_WORKSPACE/auth.json
 
       - name: Run phpcs
+        if: ${{ inputs.run-phpcs }}
         run: composer run-script phpcs
 
       - name: Run twigcs
+        if: ${{ inputs.run-twigcs }}
         run: composer run-script twigcs

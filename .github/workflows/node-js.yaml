@@ -2,6 +2,19 @@ name: Node.js
 
 on:
   workflow_call:
+    inputs:
+      run-eslint:
+        default: true
+        required: false
+        type: boolean
+      run-stylelint:
+        default: true
+        required: false
+        type: boolean
+      update-browserslist:
+        default: true
+        required: false
+        type: boolean
 
 jobs:
   build:
@@ -21,12 +34,15 @@ jobs:
         run: npm install --quiet
 
       - name: Update Browserlist
+        if: ${{ inputs.update-browserslist }}
         run: npx browserslist@latest --update-db
 
       - name: Run eslint
+        if: ${{ inputs.run-eslint }}
         run: npm run eslint
 
       - name: Run stylelint
+        if: ${{ inputs.run-stylelint }}
         run: npm run stylelint
 
       - name: Run production
