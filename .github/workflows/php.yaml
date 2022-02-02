@@ -7,15 +7,15 @@ on:
         required: true
         type: string
       run-phpcs:
-        default: true
+        default: false
         required: false
         type: boolean
       run-twigcs:
-        default: true
+        default: false
         required: false
         type: boolean
       use-composer-auth:
-        default: true
+        default: false
         required: false
         type: boolean
     secrets:

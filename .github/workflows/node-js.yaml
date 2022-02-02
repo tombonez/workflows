@@ -4,15 +4,15 @@ on:
   workflow_call:
     inputs:
       run-eslint:
-        default: true
+        default: false
         required: false
         type: boolean
       run-stylelint:
-        default: true
+        default: false
         required: false
         type: boolean
       update-browserslist:
-        default: true
+        default: false
         required: false
         type: boolean
 
