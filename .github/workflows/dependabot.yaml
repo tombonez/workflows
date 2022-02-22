@@ -3,7 +3,6 @@ name: Dependabot
 on:
   pull_request_target:
     branches: [main]
-  workflow_call:
 
 permissions:
   pull-requests: write
@@ -15,12 +14,6 @@ jobs:
 
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:
-      - name: Fetch Dependabot Metadata
-        id: dependabot-metadata
-        uses: dependabot/fetch-metadata@v1.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Enable Auto-Merge For Dependabot Pull Requests
         run: gh pr merge --auto --merge "$PR_URL"
         env:
