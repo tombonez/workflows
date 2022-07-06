@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v3.0.2
 
       - name: Use PHP ${{ inputs.php-version }} with Composer 2
-        uses: shivammathur/setup-php@2.19.1
+        uses: shivammathur/setup-php@2.20.0
         with:
           php-version: ${{ inputs.php-version }}
           tools: composer:v2
