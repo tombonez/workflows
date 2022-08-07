@@ -13,7 +13,25 @@ on:
       php-version:
         required: true
         type: string
+      run-composer:
+        default: false
+        required: false
+        type: boolean
+      run-npm:
+        default: false
+        required: false
+        type: boolean
+      update-browserslist:
+        default: false
+        required: false
+        type: boolean
+      use-composer-auth:
+        default: false
+        required: false
+        type: boolean
     secrets:
+      composer-auth-json:
+        required: false
       private-key:
         required: true
       slack-url:
@@ -27,10 +45,59 @@ jobs:
       - name: Use Checkout
         uses: actions/checkout@v3.0.2
 
-      - name: Use PHP ${{ inputs.php-version }}
+      - name: Use PHP ${{ inputs.php-version }} With Composer 2
         uses: shivammathur/setup-php@2.21.1
         with:
           php-version: ${{ inputs.php-version }}
+          tools: composer:v2
+
+      - name: Get Composer Cache Directory
+        if: ${{ inputs.run-composer }}
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Use Composer Cache Directory
+        if: ${{ inputs.run-composer }}
+        uses: actions/cache@v3.0.5
+        with:
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.composer-cache.outputs.dir }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Validate Composer Files
+        if: ${{ inputs.run-composer }}
+        run: composer validate
+
+      - name: Add Composer Authentication
+        if: ${{ inputs.run-composer }} && ${{ inputs.use-composer-auth }}
+        run: echo '${{ secrets.composer-auth-json }}' > $GITHUB_WORKSPACE/auth.json
+
+      - name: Install Composer Dependencies
+        if: ${{ inputs.run-composer }}
+        run: composer install --no-dev --no-interaction --no-progress --optimize-autoloader --prefer-dist --verbose
+
+      - name: Remove Composer Authentication
+        if: ${{ inputs.run-composer }} && ${{ inputs.use-composer-auth }}
+        run: rm -f $GITHUB_WORKSPACE/auth.json
+
+      - name: Use Node.js
+        if: ${{ inputs.run-npm }}
+        uses: actions/setup-node@v3.4.1
+        with:
+          cache: "npm"
+          node-version-file: ".nvmrc"
+
+      - name: Install Node.js Dependencies
+        if: ${{ inputs.run-npm }}
+        run: npm ci
+
+      - name: Update Browserslist
+        if: ${{ inputs.run-npm }} && ${{ inputs.update-browserslist }}
+        run: npx browserslist@latest --update-db
+
+      - name: Run NPM Production
+        if: ${{ inputs.run-npm }}
+        run: npm run production
 
       - name: Deploy
         uses: deployphp/action@v1.0.17

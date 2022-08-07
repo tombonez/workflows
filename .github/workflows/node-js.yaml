@@ -30,20 +30,20 @@ jobs:
           cache: "npm"
           node-version-file: ".nvmrc"
 
-      - name: Install Dependencies
-        run: npm install --quiet
+      - name: Install Node.js Dependencies
+        run: npm ci
 
-      - name: Update Browserlist
+      - name: Update Browserslist
         if: ${{ inputs.update-browserslist }}
         run: npx browserslist@latest --update-db
 
-      - name: Run eslint
+      - name: Run ESLint
         if: ${{ inputs.run-eslint }}
         run: npm run eslint
 
-      - name: Run stylelint
+      - name: Run Stylelint
         if: ${{ inputs.run-stylelint }}
         run: npm run stylelint
 
-      - name: Run production
+      - name: Run NPM Production
         run: npm run production

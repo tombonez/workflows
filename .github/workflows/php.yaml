@@ -30,7 +30,7 @@ jobs:
       - name: Use Checkout
         uses: actions/checkout@v3.0.2
 
-      - name: Use PHP ${{ inputs.php-version }} with Composer 2
+      - name: Use PHP ${{ inputs.php-version }} With Composer 2
         uses: shivammathur/setup-php@2.21.1
         with:
           php-version: ${{ inputs.php-version }}
@@ -40,7 +40,7 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Use Cache
+      - name: Use Composer Cache Directory
         uses: actions/cache@v3.0.5
         with:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -54,17 +54,17 @@ jobs:
         if: ${{ inputs.use-composer-auth }}
         run: echo '${{ secrets.composer-auth-json }}' > $GITHUB_WORKSPACE/auth.json
 
-      - name: Install Dependencies
-        run: composer install --no-progress
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist --verbose
 
       - name: Remove Composer Authentication
         if: ${{ inputs.use-composer-auth }}
         run: rm -f $GITHUB_WORKSPACE/auth.json
 
-      - name: Run phpcs
+      - name: Run PHP_CodeSniffer
         if: ${{ inputs.run-phpcs }}
         run: composer run-script phpcs
 
-      - name: Run twigcs
+      - name: Run Twigcs
         if: ${{ inputs.run-twigcs }}
         run: composer run-script twigcs
