@@ -29,6 +29,9 @@ on:
         default: false
         required: false
         type: boolean
+      website-url:
+        required: true
+        type: string
     secrets:
       composer-auth-json:
         required: false
@@ -39,6 +42,10 @@ on:
 
 jobs:
   deploy:
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.website-url }}
+
     runs-on: ubuntu-latest
 
     steps:
