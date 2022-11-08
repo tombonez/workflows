@@ -76,7 +76,7 @@ jobs:
         run: composer validate
 
       - name: Add Composer Authentication
-        if: ${{ inputs.run-composer }} && ${{ inputs.use-composer-auth }}
+        if: ${{ inputs.use-composer-auth }}
         run: echo '${{ secrets.composer-auth-json }}' > $GITHUB_WORKSPACE/auth.json
 
       - name: Install Composer Dependencies
@@ -84,7 +84,7 @@ jobs:
         run: composer install --no-dev --no-interaction --no-progress --optimize-autoloader --prefer-dist --verbose
 
       - name: Remove Composer Authentication
-        if: ${{ inputs.run-composer }} && ${{ inputs.use-composer-auth }}
+        if: ${{ inputs.use-composer-auth }}
         run: rm -f $GITHUB_WORKSPACE/auth.json
 
       - name: Use Node.js
@@ -99,7 +99,7 @@ jobs:
         run: npm ci
 
       - name: Update Browserslist
-        if: ${{ inputs.run-npm }} && ${{ inputs.update-browserslist }}
+        if: ${{ inputs.update-browserslist }}
         run: npx browserslist@latest --update-db
 
       - name: Run NPM Production
