@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Use Checkout
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.1.0
 
       - name: Use PHP ${{ inputs.php-version }} With Composer 2
         uses: shivammathur/setup-php@2.22.0
