@@ -89,7 +89,7 @@ jobs:
 
       - name: Use Node.js
         if: ${{ inputs.run-npm }}
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.5.1
         with:
           cache: "npm"
           node-version-file: ".nvmrc"
