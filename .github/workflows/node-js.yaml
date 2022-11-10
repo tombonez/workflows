@@ -35,7 +35,7 @@ jobs:
 
       - name: Update Browserslist
         if: ${{ inputs.update-browserslist }}
-        run: npx browserslist@latest --update-db
+        run: npx update-browserslist-db@latest
 
       - name: Run ESLint
         if: ${{ inputs.run-eslint }}
