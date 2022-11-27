@@ -104,9 +104,13 @@ jobs:
         if: ${{ inputs.run-npm }}
         run: npm run production
 
+      - name: Convert Environment Input To Lowercase
+        id: to-lowercase
+        run: echo "environment=${INPUT_ENVIRONMENT,,}" >> $GITHUB_OUTPUT
+
       - name: Deploy
         uses: deployphp/action@v1.0.17
         with:
-          dep: deploy --revision=${{ github.sha }} ${{ inputs.environment }}
+          dep: deploy --revision=${{ github.sha }} ${{ steps.to-lowercase.outputs.environment }}
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
