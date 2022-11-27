@@ -37,8 +37,6 @@ on:
         required: false
       private-key:
         required: true
-      slack-url:
-        required: true
 
 jobs:
   deploy:
@@ -109,6 +107,6 @@ jobs:
       - name: Deploy
         uses: deployphp/action@v1.0.17
         with:
-          dep: deploy -o slack_webhook=${{ secrets.slack-url }} --revision=${{ github.sha }} ${{ inputs.environment }}
+          dep: deploy -o --revision=${{ github.sha }} ${{ inputs.environment }}
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
