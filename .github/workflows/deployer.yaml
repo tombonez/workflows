@@ -107,6 +107,6 @@ jobs:
       - name: Deploy
         uses: deployphp/action@v1.0.17
         with:
-          dep: deploy -o --revision=${{ github.sha }} ${{ inputs.environment }}
+          dep: deploy --revision=${{ github.sha }} ${{ inputs.environment }}
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
