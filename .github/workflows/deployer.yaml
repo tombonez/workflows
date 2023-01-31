@@ -63,7 +63,7 @@ jobs:
 
       - name: Use Composer Cache Directory
         if: ${{ inputs.run-composer }}
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.4
         with:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           path: ${{ steps.composer-cache.outputs.dir }}
