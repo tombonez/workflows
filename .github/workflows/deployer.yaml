@@ -111,7 +111,7 @@ jobs:
           string: ${{ inputs.environment }}
 
       - name: Deploy
-        uses: deployphp/action@v1.0.21
+        uses: deployphp/action@v1.0.22
         with:
           dep: deploy --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
