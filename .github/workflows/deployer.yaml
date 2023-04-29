@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       deployer-version:
-        default: "7.3.1"
+        default: "7.3.0"
         required: false
         type: string
       environment:
