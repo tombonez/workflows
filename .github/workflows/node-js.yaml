@@ -7,6 +7,10 @@ on:
         default: false
         required: false
         type: boolean
+      run-jshint:
+        default: false
+        required: false
+        type: boolean
       run-prettier:
         default: false
         required: false
@@ -44,6 +48,10 @@ jobs:
       - name: Run ESLint
         if: ${{ inputs.run-eslint }}
         run: npm run eslint
+
+      - name: Run JSHint
+        if: ${{ inputs.run-jshint }}
+        run: npm run jshint
 
       - name: Run Prettier
         if: ${{ inputs.run-prettier }}
