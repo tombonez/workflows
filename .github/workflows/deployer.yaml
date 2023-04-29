@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       deployer-version:
-        default: "7.1.1"
+        default: "7.3.1"
         required: false
         type: string
       environment:
@@ -48,10 +48,10 @@ jobs:
 
     steps:
       - name: Use Checkout
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.2
 
       - name: Use PHP ${{ inputs.php-version }} With Composer 2
-        uses: shivammathur/setup-php@2.24.0
+        uses: shivammathur/setup-php@2.25.1
         with:
           php-version: ${{ inputs.php-version }}
           tools: composer:v2
@@ -63,7 +63,7 @@ jobs:
 
       - name: Use Composer Cache Directory
         if: ${{ inputs.run-composer }}
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -111,7 +111,7 @@ jobs:
           string: ${{ inputs.environment }}
 
       - name: Deploy
-        uses: deployphp/action@v1.0.21
+        uses: deployphp/action@v1.0.22
         with:
           dep: deploy --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
