@@ -10,6 +10,10 @@ on:
       environment:
         required: true
         type: string
+      notify-ms-teams:
+        default: false
+        required: false
+        type: boolean
       php-version:
         required: true
         type: string
@@ -34,6 +38,8 @@ on:
         type: string
     secrets:
       composer-auth-json:
+        required: false
+      ms-teams-webhook:
         required: false
       private-key:
         required: true
@@ -111,8 +117,17 @@ jobs:
           string: ${{ inputs.environment }}
 
       - name: Deploy
+        if: ${{ !inputs.notify-ms-teams }}
         uses: deployphp/action@v1.0.22
         with:
           dep: deploy --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
+          deployer-version: ${{ inputs.deployer-version }}
+          private-key: ${{ secrets.private-key }}
+
+      - name: Deploy (Notify MS Teams)
+        if: ${{ inputs.notify-ms-teams }}
+        uses: deployphp/action@v1.0.22
+        with:
+          dep: deploy -o teams_webhook=${{ secrets.ms-teams-webhook }} --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
