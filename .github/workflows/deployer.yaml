@@ -110,8 +110,12 @@ jobs:
         if: ${{ inputs.run-npm }}
         run: npm ci
 
-      - name: Update Browserslist
-        if: ${{ inputs.update-browserslist }}
+      - name: Update Browserslist (Bun)
+        if: ${{ inputs.run-bun && inputs.update-browserslist }}
+        run: echo "Not implemented yet"
+
+      - name: Update Browserslist (NPM)
+        if: ${{ inputs.run-npm && inputs.update-browserslist }}
         run: npx browserslist@latest --update-db
 
       - name: Run Bun Production
