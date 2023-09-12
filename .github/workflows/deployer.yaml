@@ -13,6 +13,10 @@ on:
       php-version:
         required: true
         type: string
+      run-bun:
+        default: false
+        required: false
+        type: boolean
       run-composer:
         default: false
         required: false
@@ -87,12 +91,20 @@ jobs:
         if: ${{ inputs.use-composer-auth }}
         run: rm -f $GITHUB_WORKSPACE/auth.json
 
+      - name: Use Bun
+        if: ${{ inputs.run-bun }}
+        uses: oven-sh/setup-bun@v1
+
       - name: Use Node.js
         if: ${{ inputs.run-npm }}
         uses: actions/setup-node@v3.8.1
         with:
           cache: "npm"
           node-version-file: ".nvmrc"
+
+      - name: Install Bun Dependencies
+        if: ${{ inputs.run-bun }}
+        run: bun install
 
       - name: Install Node.js Dependencies
         if: ${{ inputs.run-npm }}
@@ -101,6 +113,10 @@ jobs:
       - name: Update Browserslist
         if: ${{ inputs.update-browserslist }}
         run: npx browserslist@latest --update-db
+
+      - name: Run Bun Production
+        if: ${{ inputs.run-bun }}
+        run: bun run production
 
       - name: Run NPM Production
         if: ${{ inputs.run-npm }}
