@@ -1,0 +1,62 @@
+name: Bun
+
+on:
+  workflow_call:
+    inputs:
+      run-eslint:
+        default: false
+        required: false
+        type: boolean
+      run-jshint:
+        default: false
+        required: false
+        type: boolean
+      run-prettier:
+        default: false
+        required: false
+        type: boolean
+      run-stylelint:
+        default: false
+        required: false
+        type: boolean
+      update-browserslist:
+        default: false
+        required: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use Checkout
+        uses: actions/checkout@v4.0.0
+
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install Bun Dependencies
+        run: bun install
+
+      - name: Update Browserslist
+        if: ${{ inputs.update-browserslist }}
+        run: echo "Not implemented yet"
+
+      - name: Run ESLint
+        if: ${{ inputs.run-eslint }}
+        run: bun run eslint
+
+      - name: Run JSHint
+        if: ${{ inputs.run-jshint }}
+        run: bun run jshint
+
+      - name: Run Prettier
+        if: ${{ inputs.run-prettier }}
+        run: bun run prettier
+
+      - name: Run Stylelint
+        if: ${{ inputs.run-stylelint }}
+        run: bun run stylelint
+
+      - name: Run Bun Production
+        run: bun run production
