@@ -128,7 +128,7 @@ jobs:
 
       - name: Convert Environment Input To Lowercase
         id: environment
-        uses: ASzc/change-string-case-action@v5
+        uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ inputs.environment }}
 
