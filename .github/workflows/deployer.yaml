@@ -93,11 +93,11 @@ jobs:
 
       - name: Use Bun
         if: ${{ inputs.run-bun }}
-        uses: oven-sh/setup-bun@v1.1.1
+        uses: oven-sh/setup-bun@v1.2.0
 
       - name: Install Bun Dependencies
         if: ${{ inputs.run-bun }}
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Update Browserslist (Bun)
         if: ${{ inputs.run-bun && inputs.update-browserslist }}
