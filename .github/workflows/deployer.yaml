@@ -33,6 +33,10 @@ on:
         default: false
         required: false
         type: boolean
+      use-cloudflared:
+        default: false
+        required: false
+        type: boolean
       website-url:
         required: true
         type: string
@@ -41,6 +45,8 @@ on:
         required: false
       private-key:
         required: true
+      ssh-config:
+        required: false
       slack-webhook:
         required: true
 
@@ -81,7 +87,7 @@ jobs:
 
       - name: Add Composer Authentication
         if: ${{ inputs.use-composer-auth }}
-        run: echo '${{ secrets.composer-auth-json }}' > $GITHUB_WORKSPACE/auth.json
+        run: echo '${{ secrets.composer-auth-json }}' >> $GITHUB_WORKSPACE/auth.json
 
       - name: Install Composer Dependencies
         if: ${{ inputs.run-composer }}
@@ -131,6 +137,18 @@ jobs:
         uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ inputs.environment }}
+
+      - name: Install Cloudflared
+        if: ${{ inputs.use-cloudflared }}
+        run: |
+          curl -L -o /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+          chmod +x /usr/local/bin/cloudflared
+
+      - name: Add SSH Config
+        if: ${{ inputs.use-cloudflared }}
+        run: |
+          echo '${{ secrets.ssh-config }}' >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
 
       - name: Deploy
         uses: deployphp/action@v1.0.22
