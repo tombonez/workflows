@@ -37,10 +37,6 @@ on:
         default: false
         required: false
         type: boolean
-      use-cloudflared-test:
-        default: ""
-        required: false
-        type: string
       website-url:
         required: true
         type: string
@@ -97,10 +93,6 @@ jobs:
         if: ${{ inputs.run-composer }}
         run: composer install --no-dev --no-interaction --no-progress --optimize-autoloader --prefer-dist --verbose
 
-      - name: Remove Composer Authentication
-        if: ${{ inputs.use-composer-auth }}
-        run: rm -f $GITHUB_WORKSPACE/auth.json
-
       - name: Use Bun
         if: ${{ inputs.run-bun }}
         uses: oven-sh/setup-bun@v1.2.0
@@ -148,24 +140,10 @@ jobs:
           curl -L -o /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
           chmod +x /usr/local/bin/cloudflared
 
-      - name: Add SSH Config
-        if: ${{ inputs.use-cloudflared }}
-        run: |
-          mkdir -p ~/.ssh
-          echo '${{ secrets.ssh-config }}' >> ~/.ssh/config
-          chmod 600 ~/.ssh/config
-
-      - name: Test Cloudflared
-        if: ${{ inputs.use-cloudflared }}
-        run: ssh -v ${{ inputs.use-cloudflared-test }}
-
       - name: Deploy
         uses: deployphp/action@v1.0.22
         with:
           dep: deploy -o slack_webhook=${{ secrets.slack-webhook }} --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
-
-      - name: Remove SSH Config
-        if: ${{ inputs.use-cloudflared }}
-        run: rm -f ~/.ssh/config
+          ssh-config: ${{ secrets.ssh-config || '' }}
