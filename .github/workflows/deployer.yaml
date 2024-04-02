@@ -147,6 +147,7 @@ jobs:
       - name: Add SSH Config
         if: ${{ inputs.use-cloudflared }}
         run: |
+          mkdir -p ~/.ssh
           echo '${{ secrets.ssh-config }}' >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
@@ -156,3 +157,7 @@ jobs:
           dep: deploy -o slack_webhook=${{ secrets.slack-webhook }} --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
+
+      - name: Remove SSH Config
+        if: ${{ inputs.use-cloudflared }}
+        run: rm -f ~/.ssh/config
