@@ -157,7 +157,7 @@ jobs:
 
       - name: Test Cloudflared
         if: ${{ inputs.use-cloudflared }}
-        run: ssh -v {{ inputs.use-cloudflared-test }}
+        run: ssh -v ${{ inputs.use-cloudflared-test }}
 
       - name: Deploy
         uses: deployphp/action@v1.0.22
