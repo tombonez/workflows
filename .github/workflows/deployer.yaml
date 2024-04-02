@@ -45,10 +45,10 @@ on:
         required: false
       private-key:
         required: true
-      ssh-config:
-        required: false
       slack-webhook:
         required: true
+      ssh-config:
+        required: false
 
 jobs:
   deploy:
