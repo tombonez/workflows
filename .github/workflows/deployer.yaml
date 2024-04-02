@@ -148,3 +148,4 @@ jobs:
           deployer-version: ${{ inputs.deployer-version }}
           private-key: ${{ secrets.private-key }}
           ssh-config: ${{ secrets.ssh-config || '' }}
+          verbosity: -vvv
