@@ -37,6 +37,10 @@ on:
         default: false
         required: false
         type: boolean
+      use-cloudflared-test:
+        default: ""
+        required: false
+        type: string
       website-url:
         required: true
         type: string
@@ -150,6 +154,10 @@ jobs:
           mkdir -p ~/.ssh
           echo '${{ secrets.ssh-config }}' >> ~/.ssh/config
           chmod 600 ~/.ssh/config
+
+      - name: Test Cloudflared
+        if: ${{ inputs.use-cloudflared }}
+        run: ssh -v {{ inputs.use-cloudflared-test }}
 
       - name: Deploy
         uses: deployphp/action@v1.0.22
