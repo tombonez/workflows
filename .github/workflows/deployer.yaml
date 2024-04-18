@@ -145,7 +145,7 @@ jobs:
           chmod +x /usr/local/bin/cloudflared
 
       - name: Deploy
-        uses: deployphp/action@v1.0.22
+        uses: deployphp/action@v1.0.23
         with:
           dep: deploy -o slack_webhook=${{ secrets.slack-webhook }} --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
