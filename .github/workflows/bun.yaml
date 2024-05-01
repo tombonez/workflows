@@ -30,10 +30,10 @@ jobs:
 
     steps:
       - name: Use Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
 
       - name: Use Bun
-        uses: oven-sh/setup-bun@v1.2.0
+        uses: oven-sh/setup-bun@v1.2.1
 
       - name: Install Bun Dependencies
         run: bun install --frozen-lockfile

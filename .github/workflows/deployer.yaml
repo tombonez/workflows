@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       deployer-version:
-        default: "7.3.0"
+        default: "7.4.0"
         required: false
         type: string
       environment:
@@ -60,10 +60,10 @@ jobs:
 
     steps:
       - name: Use Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
 
       - name: Use PHP ${{ inputs.php-version }} With Composer 2
-        uses: shivammathur/setup-php@2.30.2
+        uses: shivammathur/setup-php@2.30.4
         with:
           php-version: ${{ inputs.php-version }}
           tools: composer:v2
@@ -99,7 +99,7 @@ jobs:
 
       - name: Use Bun
         if: ${{ inputs.run-bun }}
-        uses: oven-sh/setup-bun@v1.2.0
+        uses: oven-sh/setup-bun@v1.2.1
 
       - name: Install Bun Dependencies
         if: ${{ inputs.run-bun }}
@@ -145,7 +145,7 @@ jobs:
           chmod +x /usr/local/bin/cloudflared
 
       - name: Deploy
-        uses: deployphp/action@v1.0.22
+        uses: deployphp/action@v1.0.23
         with:
           dep: deploy -o slack_webhook=${{ secrets.slack-webhook }} --revision=${{ github.sha }} ${{ steps.environment.outputs.lowercase }}
           deployer-version: ${{ inputs.deployer-version }}
