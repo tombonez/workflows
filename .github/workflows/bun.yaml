@@ -40,7 +40,7 @@ jobs:
 
       - name: Update Browserslist
         if: ${{ inputs.update-browserslist }}
-        run: echo "Not implemented yet"
+        run: bunx update-browserslist-db@latest
 
       - name: Run ESLint
         if: ${{ inputs.run-eslint }}
