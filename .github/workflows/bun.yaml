@@ -35,12 +35,6 @@ jobs:
       - name: Use Bun
         uses: oven-sh/setup-bun@v2.0.1
 
-      - name: Use Bun Cache Directory
-        uses: actions/cache@v4.1.2
-        with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
-
       - name: Install Bun Dependencies
         run: bun install --frozen-lockfile
 
