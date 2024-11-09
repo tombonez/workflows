@@ -101,6 +101,13 @@ jobs:
         if: ${{ inputs.run-bun }}
         uses: oven-sh/setup-bun@v2.0.1
 
+      - name: Use Bun Cache Directory
+        if: ${{ inputs.run-bun }}
+        uses: actions/cache@v4.1.2
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+
       - name: Install Bun Dependencies
         if: ${{ inputs.run-bun }}
         run: bun install --frozen-lockfile
