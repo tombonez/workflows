@@ -126,7 +126,7 @@ jobs:
 
       - name: Update Browserslist (NPM)
         if: ${{ inputs.run-npm && inputs.update-browserslist }}
-        run: npx browserslist@latest --update-db
+        run: npx update-browserslist-db@latest
 
       - name: Run NPM Production
         if: ${{ inputs.run-npm }}
