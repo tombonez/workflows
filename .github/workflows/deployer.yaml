@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v4.2.2
 
       - name: Use PHP ${{ inputs.php-version }} With Composer 2
-        uses: shivammathur/setup-php@2.31.1
+        uses: shivammathur/setup-php@2.32.0
         with:
           php-version: ${{ inputs.php-version }}
           tools: composer:v2
@@ -75,7 +75,7 @@ jobs:
 
       - name: Use Composer Cache Directory
         if: ${{ inputs.run-composer }}
-        uses: actions/cache@v4.1.2
+        uses: actions/cache@v4.2.0
         with:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -115,7 +115,7 @@ jobs:
 
       - name: Use Node.js
         if: ${{ inputs.run-npm }}
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4.2.0
         with:
           cache: "npm"
           node-version-file: ".nvmrc"
